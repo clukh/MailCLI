@@ -1,16 +1,4 @@
 
-"""
-MailCLI SMTP
-
-Features:
-- Gmail SMTP
-- 2FA App Password support
-- File + console logging
-- Clean error handling
-- Beginner-friendly usage
-
-! For EDUCATIONAL & LEGIT use only
-"""
 import pyfiglet
 
 # Print MAILCLI banner once
