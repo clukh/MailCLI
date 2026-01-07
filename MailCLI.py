@@ -1,7 +1,7 @@
 
 import pyfiglet
 
-# Print MAILCLI banner once
+
 print(pyfiglet.figlet_format("MAILCLI", font="slant"))
 
 
@@ -41,7 +41,7 @@ def send_email(sender, app_password, receiver, subject, body):
         logging.info("Connecting to SMTP server")
 
         server = smtplib.SMTP("smtp.gmail.com", 587)
-        server.starttls()  # Secure the connection
+        server.starttls()  
 
         logging.info("Logging in to SMTP server")
         server.login(sender, app_password)
