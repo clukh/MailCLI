@@ -1,0 +1,32 @@
+2026-01-05 16:21:07,743 | INFO | Program started
+2026-01-05 16:22:04,726 | INFO | Email request | From: clukhmate@gmail.com | To: yashparad@gmail.com
+2026-01-05 16:22:04,746 | INFO | Connecting to SMTP server
+2026-01-05 16:22:06,234 | INFO | Logging in to SMTP server
+2026-01-05 16:22:07,376 | ERROR | Authentication failed (wrong App Password)
+2026-01-05 16:22:07,376 | INFO | Program finished
+2026-01-05 16:23:08,917 | INFO | Program started
+2026-01-05 16:23:33,441 | INFO | Email request | From: clukhmate@gmail.com | To: yashparad@2012
+2026-01-05 16:23:33,454 | INFO | Connecting to SMTP server
+2026-01-05 16:23:35,099 | INFO | Logging in to SMTP server
+2026-01-05 16:23:36,263 | ERROR | Authentication failed (wrong App Password)
+2026-01-05 16:23:36,264 | INFO | Program finished
+2026-01-05 16:29:15,765 | INFO | Program started
+2026-01-05 16:30:07,549 | INFO | Email request | From: clukhmate@gmail.com | To: yashparad2035@gmail.com
+2026-01-05 16:30:07,562 | INFO | Connecting to SMTP server
+2026-01-05 16:30:08,382 | INFO | Logging in to SMTP server
+2026-01-05 16:30:09,635 | ERROR | Authentication failed (wrong App Password)
+2026-01-05 16:30:09,635 | INFO | Program finished
+2026-01-05 16:34:57,063 | INFO | Program started
+2026-01-05 16:35:24,266 | INFO | Email request | From: clukhmate@gmail.com | To: yashparad2035@gmail.com
+2026-01-05 16:35:24,282 | INFO | Connecting to SMTP server
+2026-01-05 16:35:25,096 | INFO | Logging in to SMTP server
+2026-01-05 16:35:25,722 | INFO | Sending email
+2026-01-05 16:35:27,282 | INFO | Email sent successfully
+2026-01-05 16:35:27,282 | INFO | Program finished
+2026-01-05 16:38:01,194 | INFO | Program started
+2026-01-05 16:39:00,903 | INFO | Email request | From: clukhmate@gmail.com | To: clukhmate@gmail.com
+2026-01-05 16:39:00,910 | INFO | Connecting to SMTP server
+2026-01-05 16:39:01,720 | INFO | Logging in to SMTP server
+2026-01-05 16:39:02,341 | INFO | Sending email
+2026-01-05 16:39:04,050 | INFO | Email sent successfully
+2026-01-05 16:39:04,050 | INFO | Program finished
