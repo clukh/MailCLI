@@ -1,3 +1,13 @@
+<<<<<<< HEAD
+=======
+
+import pyfiglet
+
+
+print(pyfiglet.figlet_format("MAILCLI", font="slant"))
+
+
+>>>>>>> 6e450347e15fb11112167cadeff8645a1e08b94d
 import smtplib
 import ssl
 import os
@@ -51,9 +61,14 @@ def masked_input(prompt, timeout=60):
     password = ""
     start_time = time.time()
 
+<<<<<<< HEAD
     while True:
         if time.time() - start_time > timeout:
             raise TimeoutError("Password input timed out")
+=======
+        server = smtplib.SMTP("smtp.gmail.com", 587)
+        server.starttls()  
+>>>>>>> 6e450347e15fb11112167cadeff8645a1e08b94d
 
         if msvcrt.kbhit():
             char = msvcrt.getch()
