@@ -30,3 +30,36 @@
 2026-01-05 16:39:02,341 | INFO | Sending email
 2026-01-05 16:39:04,050 | INFO | Email sent successfully
 2026-01-05 16:39:04,050 | INFO | Program finished
+2026-01-07 15:29:18,252 | INFO | Program started
+2026-01-07 15:32:45,041 | INFO | Program started
+2026-01-07 15:33:14,491 | INFO | Program started
+2026-01-07 15:34:51,947 | INFO | Connecting to Gmail SMTP
+2026-01-07 15:34:54,646 | ERROR | Authentication failed
+2026-01-07 15:34:54,646 | INFO | Program finished
+2026-01-07 15:35:02,925 | INFO | Program started
+2026-01-07 15:38:40,170 | INFO | Program started
+2026-01-07 15:41:13,394 | INFO | Attachment added: C:\Users\clukh\Downloads\Boarding_pass_20260103_171542_0000.jpg
+2026-01-07 15:41:13,426 | INFO | Connecting to Gmail SMTP
+2026-01-07 15:41:16,373 | ERROR | Authentication failed
+2026-01-07 15:41:16,373 | INFO | Program finished
+2026-01-07 15:41:28,031 | INFO | Program started
+2026-01-07 15:42:10,113 | INFO | Connecting to Gmail SMTP
+2026-01-07 15:42:12,953 | ERROR | Authentication failed
+2026-01-07 15:42:12,953 | INFO | Program finished
+2026-01-07 15:43:53,795 | INFO | Program started
+2026-01-07 15:44:17,777 | INFO | Connecting to Gmail SMTP
+2026-01-07 15:44:20,832 | INFO | Email sent successfully
+2026-01-07 15:44:20,833 | INFO | Program finished
+2026-01-07 15:44:45,893 | INFO | Program started
+2026-01-07 15:44:54,999 | INFO | Program started
+2026-01-07 15:45:37,033 | INFO | Attachment added: C:\Users\clukh\Downloads\Boarding_pass_20260103_171542_0000.jpg
+2026-01-07 15:45:37,057 | INFO | Connecting to Gmail SMTP
+2026-01-07 15:45:41,551 | INFO | Email sent successfully
+2026-01-07 15:45:41,551 | INFO | Program finished
+2026-01-07 15:51:51,993 | INFO | Program started
+2026-01-07 15:52:22,007 | ERROR | Input timed out
+2026-01-07 15:52:22,008 | INFO | Program finished
+2026-01-07 15:52:43,777 | INFO | Program started
+2026-01-07 15:53:28,609 | INFO | Connecting to smtp.gmail.com:587
+2026-01-07 15:53:31,970 | INFO | Email sent successfully
+2026-01-07 15:53:31,970 | INFO | Program finished

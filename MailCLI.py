@@ -1,105 +1,191 @@
-
-"""
-MailCLI SMTP
-
-Features:
-- Gmail SMTP
-- 2FA App Password support
-- File + console logging
-- Clean error handling
-- Beginner-friendly usage
-
-! For EDUCATIONAL & LEGIT use only
-"""
-import pyfiglet
-
-# Print MAILCLI banner once
-print(pyfiglet.figlet_format("MAILCLI", font="slant"))
-
-
 import smtplib
+import ssl
+import os
+import sys
+import time
 import logging
+import threading
 from email.message import EmailMessage
-from datetime import datetime
 
+# =========================
+# PATHS & LOGGING
+# =========================
 
-
-LOG_FILE = "mailer.log"
+BASE_DIR = os.path.dirname(sys.executable if getattr(sys, "frozen", False) else os.path.abspath(__file__))
+LOG_FILE = os.path.join(BASE_DIR, "mailer.log")
 
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s | %(levelname)s | %(message)s",
     handlers=[
-        logging.FileHandler(LOG_FILE),
+        logging.FileHandler(LOG_FILE, encoding="utf-8"),
         logging.StreamHandler()
     ]
 )
 
-logging.info("Program started")
+# =========================
+# ASCII TITLE (SAFE)
+# =========================
+
+def banner():
+    print(r"""
+  __  __       _ _  ____ _     ___ 
+ |  \/  | __ _(_) |/ ___| |   |_ _|
+ | |\/| |/ _` | | | |   | |    | | 
+ | |  | | (_| | | | |___| |___ | | 
+ |_|  |_|\__,_|_|_|\____|_____|___|
+
+           SMTP Console Mailer
+""")
+print("        v1.5 • by clukh\n")
 
 
-def send_email(sender, app_password, receiver, subject, body):
-    """
-    Sends an email using Gmail SMTP with TLS and App Password (2FA)
-    """
+# =========================
+# MASKED PASSWORD INPUT
+# =========================
 
-    msg = EmailMessage()
-    msg.set_content(body)
-    msg["Subject"] = subject
-    msg["From"] = sender
-    msg["To"] = receiver
+def masked_input(prompt, timeout=60):
+    import msvcrt
 
-    try:
-        logging.info("Connecting to SMTP server")
+    print(prompt, end="", flush=True)
+    password = ""
+    start_time = time.time()
 
-        server = smtplib.SMTP("smtp.gmail.com", 587)
-        server.starttls()  # Secure the connection
+    while True:
+        if time.time() - start_time > timeout:
+            raise TimeoutError("Password input timed out")
 
-        logging.info("Logging in to SMTP server")
-        server.login(sender, app_password)
+        if msvcrt.kbhit():
+            char = msvcrt.getch()
 
-        logging.info("Sending email")
-        server.send_message(msg)
+            if char in {b"\r", b"\n"}:
+                print()
+                return password
 
-        server.quit()
+            elif char == b"\x08":  # Backspace
+                if password:
+                    password = password[:-1]
+                    print("\b \b", end="", flush=True)
 
-        logging.info("Email sent successfully")
-        print("\n Email sent successfully!")
+            elif char == b"\x03":
+                raise KeyboardInterrupt
 
-    except smtplib.SMTPAuthenticationError:
-        logging.error("Authentication failed (wrong App Password)")
-        print("\n Authentication failed")
-        print(" Check your App Password (NOT normal Gmail password)")
+            else:
+                password += char.decode(errors="ignore")
+                print("*", end="", flush=True)
 
-    except Exception as e:
-        logging.exception("Unexpected error occurred")
-        print("\n Failed to send email")
-        print("Error:", e)
+        time.sleep(0.01)
 
+# =========================
+# TIMED INPUT (NON-PASSWORD)
+# =========================
 
+def timed_input(prompt, timeout=60):
+    result = [None]
+
+    def worker():
+        result[0] = input(prompt)
+
+    thread = threading.Thread(target=worker)
+    thread.daemon = True
+    thread.start()
+    thread.join(timeout)
+
+    if thread.is_alive():
+        raise TimeoutError("Input timed out")
+
+    return result[0]
+
+# =========================
+# SMTP PROVIDERS
+# =========================
+
+SMTP_PROVIDERS = {
+    "gmail": ("smtp.gmail.com", 587),
+    "outlook": ("smtp.office365.com", 587),
+    "yahoo": ("smtp.mail.yahoo.com", 587),
+}
+
+# =========================
+# MAIN PROGRAM
+# =========================
 
 def main():
-    print("MailCLI SMTP")
-    print("-----------------------------------")
+    logging.info("Program started")
+    banner()
 
-    sender_email = input("Gmail address: ").strip()
-    app_password = input("Gmail App Password (16 chars): ").strip()
-    receiver_email = input("Receiver email: ").strip()
-    subject = input("Subject: ").strip()
-    body = input("Message body: ").strip()
+    try:
+        provider = timed_input("SMTP Provider (gmail/outlook/yahoo/custom): ", 30).strip().lower()
 
-    logging.info(f"Email request | From: {sender_email} | To: {receiver_email}")
+        if provider == "custom":
+            host = timed_input("SMTP Host: ", 30).strip()
+            port = int(timed_input("SMTP Port: ", 30))
+        elif provider in SMTP_PROVIDERS:
+            host, port = SMTP_PROVIDERS[provider]
+        else:
+            print("❌ Invalid provider")
+            return
 
-    send_email(
-        sender=sender_email,
-        app_password=app_password,
-        receiver=receiver_email,
-        subject=subject,
-        body=body
-    )
+        sender = timed_input("Your email address: ", 30).strip()
+        password = masked_input("App Password (masked): ", timeout=60)
+        receiver = timed_input("Receiver email: ", 30).strip()
+        subject = timed_input("Subject: ", 60)
+        body = timed_input("Message body: ", 120)
 
-    logging.info("Program finished")
+        msg = EmailMessage()
+        msg["From"] = sender
+        msg["To"] = receiver
+        msg["Subject"] = subject
+        msg.set_content(body)
 
+        # Attachments
+        attach = timed_input("Add attachment? (y/n): ", 20).lower()
+        while attach == "y":
+            path = timed_input("Attachment file path: ", 60).strip()
+            if os.path.isfile(path):
+                with open(path, "rb") as f:
+                    data = f.read()
+                filename = os.path.basename(path)
+                msg.add_attachment(data, maintype="application", subtype="octet-stream", filename=filename)
+                logging.info(f"Attachment added: {filename}")
+            else:
+                print("❌ File not found")
+
+            attach = timed_input("Add another attachment? (y/n): ", 20).lower()
+
+        logging.info(f"Connecting to {host}:{port}")
+
+        context = ssl.create_default_context()
+        with smtplib.SMTP(host, port, timeout=30) as server:
+            server.starttls(context=context)
+            server.login(sender, password)
+            server.send_message(msg)
+
+        print("✅ Email sent successfully")
+        logging.info("Email sent successfully")
+
+    except TimeoutError as e:
+        print(f"⏱️ Timeout: {e}")
+        logging.error(str(e))
+
+    except smtplib.SMTPAuthenticationError:
+        print("❌ Authentication failed (wrong App Password)")
+        logging.error("SMTP authentication failed")
+
+    except KeyboardInterrupt:
+        print("\n❌ Cancelled by user")
+        logging.warning("User cancelled program")
+
+    except Exception as e:
+        print(f"❌ Error: {e}")
+        logging.exception("Unhandled exception")
+
+    finally:
+        logging.info("Program finished")
+
+# =========================
+# ENTRY POINT
+# =========================
 
 if __name__ == "__main__":
     main()
